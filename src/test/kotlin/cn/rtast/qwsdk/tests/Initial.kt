@@ -1,11 +1,10 @@
 package cn.rtast.qwsdk.tests
 
 import cn.rtast.qwsdk.QWeather
-import cn.rtast.qwsdk.enums.Plans
+import cn.rtast.qwsdk.QWeather.Plans
 import cn.rtast.qwsdk.tests.errs.NoKeyFoundException
 
 object Initial {
-
     val qw = QWeather()
 
     init {

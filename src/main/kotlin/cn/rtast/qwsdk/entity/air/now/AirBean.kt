@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package cn.rtast.qwsdk.entity.air.daily
+package cn.rtast.qwsdk.entity.air.now
 
 import cn.rtast.qwsdk.entity.Refer
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AirDailyBean(
+data class AirBean(
     val code: String,
-    val daily: List<Daily>,
     val fxLink: String,
+    val now: Now,
     val refer: Refer,
+    val station: List<Station>,
     val updateTime: String
 )

@@ -22,7 +22,7 @@ import java.util.Date
 import kotlin.random.Random
 
 fun isFreePlan(): Boolean {
-    return QWeather.rootAPI.contains("https://devapi")
+    return QWeather.isFree
 }
 
 fun randomID(): String {

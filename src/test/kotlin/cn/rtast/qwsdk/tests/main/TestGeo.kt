@@ -16,10 +16,10 @@
 
 package cn.rtast.qwsdk.tests.main
 
-import cn.rtast.qwsdk.enums.POIType
 import cn.rtast.qwsdk.tests.Initial.qw
 import cn.rtast.qwsdk.tests.utils.randomID
 import cn.rtast.qwsdk.utils.Coordinate
+import cn.rtast.qwsdk.QWeather.POIType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

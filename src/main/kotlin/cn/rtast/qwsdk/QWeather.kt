@@ -1,49 +1,70 @@
 /*
- * Copyright 2023 RTAkland
+ * Copyright 2024 VastGui
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package cn.rtast.qwsdk
 
 import cn.rtast.qwsdk.sub.*
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.compression.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
+import java.util.Locale
 import java.util.logging.Logger
-
 
 class QWeather {
     companion object {
         var key: String? = null
+        var isFree: Boolean = false
+            private set
         var rootAPI = "https://devapi.qweather.com/v7"
         const val geoAPI = "https://geoapi.qweather.com/v2"
         val logger: Logger = Logger.getLogger("QWSDK-MAIN")
+        lateinit var client: HttpClient
     }
 
     fun init(plan: Plans, apiKey: String) {
-        rootAPI = when (plan) {
-            Plans.Free -> {
-                "https://devapi.qweather.com/v7"
+        isFree = plan == Plans.Free
+        client = HttpClient(CIO) {
+            defaultRequest {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = when (plan) {
+                        Plans.Free -> "devapi.qweather.com"
+                        Plans.Standard -> "api.qweather.com"
+                        Plans.Custom -> "api.qweather.com"
+                    }
+                    path("v7/")
+                    parameters.append("key", apiKey)
+                }
             }
-
-            Plans.Standard -> {
-                "https://api.qweather.com/v7"
+            install(Logging) {
+                level = LogLevel.ALL
             }
-
-            Plans.Custom -> {
-                "https://api.qweather.com/v7"
+            install(ContentNegotiation) {
+                json()
+            }
+            install(ContentEncoding) {
+                gzip(1f)
             }
         }
-        key = apiKey
-        logger.info("Current Plan: $plan, Current API Host: $rootAPI")
     }
 
     fun geo(): Geo {
@@ -132,11 +153,16 @@ class QWeather {
         TRAFFIC, SPF
     }
 
+    /** [多语言代码](https://dev.qweather.com/docs/resource/language/#language-code) */
     enum class Lang {
         ZH, ZH_HANT, EN, DE, ES, FR, IT,
         JA, KO, RU, HI, TH, AR, PT, BN,
         MS, NL, EL, LA, SV, ID, PL, TR,
-        CS, ET, VI, FIL, FI, HE, IS, NB
+        CS, ET, VI, FIL, FI, HE, IS, NB, ;
+
+        override fun toString(): String {
+            return name.lowercase()
+        }
     }
 
     enum class Plans {
