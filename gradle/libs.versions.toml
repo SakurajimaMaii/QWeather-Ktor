@@ -1,12 +1,18 @@
 [versions]
 kotlinx-coroutines-test = "1.8.0-RC2"
 ktor = "2.3.7"
+vastcore = "0.0.7"
+org-junit-jupiter = "5.9.2"
 
 [libraries]
+junit-jupiter-api = {module="org.junit.jupiter:junit-jupiter-api",version.ref="org-junit-jupiter"}
+junit-jupiter-engine = {module="org.junit.jupiter:junit-jupiter-engine",version.ref="org-junit-jupiter"}
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-cio-jvm = { module = "io.ktor:ktor-client-cio-jvm", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+vastcore = { module = "io.github.sakurajimamaii:VastCore", version.ref = "vastcore" }
