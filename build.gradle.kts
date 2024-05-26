@@ -1,13 +1,12 @@
-import java.net.URL
 import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.com.google.gson.internal.bind.TypeAdapters.URL
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.net.URL
 
 plugins {
-    kotlin("jvm") version "1.9.10"
-    kotlin("plugin.serialization") version "1.9.10"
-    id("org.jetbrains.dokka") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20"
+    id("org.jetbrains.dokka") version "1.9.20"
     id("convention.publication")
 }
 
@@ -31,7 +30,7 @@ repositories {
 
 buildscript {
     dependencies {
-        classpath("org.jetbrains.dokka:dokka-base:1.9.10")
+        classpath("org.jetbrains.dokka:dokka-base:1.9.20")
     }
 }
 
@@ -44,6 +43,10 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.vastcore)
+    testImplementation("org.slf4j:slf4j-api:1.6.1")
+    testImplementation("org.slf4j:slf4j-simple:1.6.1")
+    testImplementation("io.github.sakurajimamaii:log-core:1.3.3")
+    testImplementation("io.github.sakurajimamaii:log-desktop:1.3.3")
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)

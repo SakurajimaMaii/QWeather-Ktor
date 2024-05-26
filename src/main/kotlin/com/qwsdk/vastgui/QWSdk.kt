@@ -16,6 +16,7 @@
 
 package com.qwsdk.vastgui
 
+import com.ave.vastgui.core.extension.NotNullOrDefault
 import com.ave.vastgui.core.extension.SingletonHolder
 import com.qwsdk.vastgui.QWSdk.BasinType.*
 import com.qwsdk.vastgui.QWSdk.IndicesType.*
@@ -27,8 +28,10 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.compression.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.client.plugins.logging.Logger
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.logging.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
@@ -71,15 +74,21 @@ import kotlinx.serialization.json.Json
  * ```
  */
 @OptIn(ExperimentalSerializationApi::class)
-class QWSdk private constructor(private val configuration: Configuration) {
+class QWSdk private constructor(internal val configuration: Configuration) {
 
     /**
      * QWSdk 配置
      *
      * @property plan 订阅计划。
      * @property apiKey Key，点击 [项目和KEY](https://dev.qweather.com/docs/configuration/project-and-key/) 了解详情。
+     * @property logger 允许你对日志进行处理。
      */
-    class Configuration(internal val plan: Plan, internal val apiKey: String)
+    class Configuration(
+        internal val plan: Plan,
+        internal val apiKey: String,
+        /** @since 1.1.2 */
+        internal val logger: ((String) -> Unit)? = null
+    )
 
     companion object : SingletonHolder<QWSdk, Configuration>(::QWSdk)
 
@@ -96,6 +105,11 @@ class QWSdk private constructor(private val configuration: Configuration) {
         }
         install(Logging) {
             level = LogLevel.ALL
+            logger = object : Logger {
+                override fun log(message: String) {
+                    configuration.logger?.invoke(message)
+                }
+            }
         }
         install(ContentNegotiation) {
             json(Json {
@@ -270,6 +284,12 @@ class QWSdk private constructor(private val configuration: Configuration) {
         Free("devapi.qweather.com"),
         Standard("api.qweather.com");
 
+        /**
+         * 判断是否是标准版。
+         *
+         * @since 1.1.2
+         */
+        internal fun isStandard() = this == Standard
         internal fun isFree() = this == Free
     }
 

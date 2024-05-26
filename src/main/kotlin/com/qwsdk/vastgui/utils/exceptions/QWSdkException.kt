@@ -48,5 +48,5 @@ sealed class QWSdkException(val code: Int, message: String) : Exception(message)
     class E500() :
         QWSdkException(500, "无响应或超时，接口服务异常请联系我们 https://www.qweather.com/contact")
 
-    override fun toString(): String = "错误代码：$code，错误信息${message}详情参考：https://dev.qweather.com/docs/resource/status-code/"
+    override fun toString(): String = "错误代码：$code，错误信息：${message}，详情参考：https://dev.qweather.com/docs/resource/status-code/"
 }
