@@ -16,3 +16,16 @@
 
 > [!IMPORTANT]
 > 该项目修改自 [RTAkland/QWeatherSDK](https://github.com/RTAkland/QWeatherSDK) ，在此表示诚挚的感谢。
+
+## 添加依赖
+
+当前版本：![version](https://img.shields.io/maven-central/v/io.github.sakurajimamaii/qweather-sdk-ktor)
+
+```gradle
+implementation("io.github.sakurajimamaii:qweather-sdk-ktor:1.1.1")
+```
+
+## 使用
+
+- 前往 [和风天气](https://www.qweather.com/) 注册账户并获取 Key 。
+- 运行单元测试内的示例查看效果。

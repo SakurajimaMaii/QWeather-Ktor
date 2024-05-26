@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "io.github.sakurajimamaii"
-version = "1.1.1"
+version = "1.1.2"
 
 sourceSets {
     getByName("main").java.srcDirs("src/main/kotlin")
@@ -66,7 +66,7 @@ tasks.withType<DokkaTask>().configureEach {
     dokkaSourceSets.configureEach {
         notCompatibleWithConfigurationCache("https://github.com/Kotlin/dokka/issues/1217")
         jdkVersion.set(17)
-        languageVersion.set("1.9.10")
+        languageVersion.set("1.9.20")
         suppressInheritedMembers.set(true)
         suppressObviousFunctions.set(true)
         sourceRoots.from(file("src"))
@@ -105,7 +105,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.sakurajimamaii"
             artifactId = "qweather-sdk-ktor"
-            version = "1.1.1"
+            version = "1.1.2"
 
             afterEvaluate {
                 from(components["java"])
