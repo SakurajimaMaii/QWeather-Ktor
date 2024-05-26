@@ -47,9 +47,7 @@ class Astronomy internal constructor(private val qwSdk: QWSdk) {
     suspend fun sun(
         location: Location, date: String, lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<Sun> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
         DateUtil(date).verifyYMD()
         qwSdk.client.get("astronomy/sun") {
             url {
@@ -77,9 +75,7 @@ class Astronomy internal constructor(private val qwSdk: QWSdk) {
     suspend fun moon(
         location: Location, date: String, lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<Moon> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
         DateUtil(date).verifyYMD()
         qwSdk.client.get("astronomy/moon") {
             url {

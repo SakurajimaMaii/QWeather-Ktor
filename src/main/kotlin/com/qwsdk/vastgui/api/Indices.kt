@@ -35,9 +35,7 @@ class Indices internal constructor(private val qwSdk: QWSdk) {
         lang: QWSdk.Lang = QWSdk.Lang.ZH,
         vararg types: QWSdk.IndicesType = arrayOf(QWSdk.IndicesType.ALL),
     ): Result<Indices> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
         val typeArray = if (types.contains(QWSdk.IndicesType.ALL)) {
             arrayOf(QWSdk.IndicesType.ALL)
         } else types

@@ -59,9 +59,7 @@ class Warning internal constructor(private val qwSdk: QWSdk) {
         location: Location,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<Warning> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
         qwSdk.client.get("warning/now") {
             url {
                 parameter("location", location.location)

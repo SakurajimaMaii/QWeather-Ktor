@@ -49,9 +49,7 @@ class Air internal constructor(private val qwSdk: QWSdk) {
         location: Location,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<AirNow> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
         qwSdk.client.get("air/now") {
             url {
                 parameter("location", location.location)
@@ -75,9 +73,7 @@ class Air internal constructor(private val qwSdk: QWSdk) {
         location: Location,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<AirDaily> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
         qwSdk.client.get("air/5d") {
             url {
                 parameter("location", location.location)

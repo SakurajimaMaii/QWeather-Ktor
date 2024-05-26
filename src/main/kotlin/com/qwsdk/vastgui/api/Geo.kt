@@ -76,7 +76,7 @@ class Geo internal constructor(private val qwSdk: QWSdk) {
         number: Int = 10,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<GeoLookup> = apiCatching {
-        check(number in 1..20) { "Invalid Range: $number, please choose from 1-20!" }
+        check(number in 1..20) { "无效的数量: $number, 可用的范围：1-20!" }
         qwSdk.client.get {
             url {
                 url("https://geoapi.qweather.com/v2/city/lookup")
@@ -109,7 +109,7 @@ class Geo internal constructor(private val qwSdk: QWSdk) {
         number: Int = 10,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<GeoTop> = apiCatching {
-        check(number in 1..20) { "Invalid Range: $number, please choose from 1-20!" }
+        check(number in 1..20) { "无效的数量: $number, 可用的范围：1-20!" }
         qwSdk.client.get {
             url {
                 url("https://geoapi.qweather.com/v2/city/top")
@@ -144,7 +144,7 @@ class Geo internal constructor(private val qwSdk: QWSdk) {
         number: Int = 10,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<GeoPoi> = apiCatching {
-        check(number in 1..20) { "Invalid Range: $number, please choose from 1-20!" }
+        check(number in 1..20) { "无效的数量: $number, 可用的范围：1-20!" }
         qwSdk.client.get {
             url {
                 url("https://geoapi.qweather.com/v2/poi/lookup")
@@ -179,8 +179,8 @@ class Geo internal constructor(private val qwSdk: QWSdk) {
         number: Int = 10,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<GeoPoiRange> = apiCatching {
-        check(number in 1..20) { "Invalid Range: $number, please choose from 1-20!" }
-        check(radius in 1..50) { "Invalid Radius: $radius, please choose from 1-50!" }
+        check(number in 1..20) { "无效的数量: $number, 可用的范围：1-20!" }
+        check(radius in 1..50) { "无效的数量: $radius, 可用的范围：1-50!" }
         qwSdk.client.get {
             url("https://geoapi.qweather.com/v2/poi/range")
             parameter("key", qwSdk.apiKey)
