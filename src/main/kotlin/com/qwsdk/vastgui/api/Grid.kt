@@ -82,9 +82,7 @@ class Grid internal constructor(private val qwSdk: QWSdk) {
         unit: QWSdk.Units = QWSdk.Units.M,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<GridDaily> = apiCatching {
-        check(!(arrayOf(Day.Day10, Day.Day15, Day.Day30).contains(days))) {
-            "Invalid day range: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(Day.Day3 == days || Day.Day7 == days) { "无效的时间范围，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         qwSdk.client.get("grid-weather/${days.range}") {
             parameter("location", location.location)
             parameter("lang", lang)
@@ -109,12 +107,9 @@ class Grid internal constructor(private val qwSdk: QWSdk) {
         unit: QWSdk.Units = QWSdk.Units.M,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<GridHourly> = apiCatching {
-        check(!(qwSdk.apiPlan.isFree() && arrayOf(Hour.Hour72, Hour.Hour168).contains(hours))) {
-            "Invalid day range: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
-        check(!(!qwSdk.apiPlan.isFree() && hours is Hour.Hour168)) {
-            "Invalid day range: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        val standardRange = qwSdk.apiPlan.isStandard() && (Hour.Hour24 == hours || Hour.Hour72 == hours)
+        val freeRange = qwSdk.apiPlan.isFree() && Hour.Hour24 == hours
+        check(standardRange || freeRange) { "无效的时间范围，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         qwSdk.client.get("grid-weather/${hours.range}") {
             parameter("location", location.location)
             parameter("lang", lang)

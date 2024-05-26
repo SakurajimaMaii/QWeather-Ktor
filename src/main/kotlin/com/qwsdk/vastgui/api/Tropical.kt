@@ -45,9 +45,7 @@ class Tropical internal constructor(private val qwSdk: QWSdk) {
      */
     @Throws(IllegalStateException::class)
     suspend fun forecast(stormID: StormId): Result<StormForecast> = apiCatching {
-        check(qwSdk.apiPlan.isFree()) {
-            "Invalid permission: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(qwSdk.apiPlan.isStandard()) { "无效权限，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         qwSdk.client.get("tropical/storm-forecast") {
             url {
                 parameter("stormid", stormID.id)
@@ -65,9 +63,7 @@ class Tropical internal constructor(private val qwSdk: QWSdk) {
      */
     @Throws(IllegalStateException::class)
     suspend fun track(stormID: StormId): Result<StormTrack> = apiCatching {
-        check(qwSdk.apiPlan.isFree()) {
-            "Invalid permission: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(qwSdk.apiPlan.isStandard()) { "无效权限，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         qwSdk.client.get("tropical/storm-track") {
             url {
                 parameter("stormid", stormID.id)
@@ -88,17 +84,11 @@ class Tropical internal constructor(private val qwSdk: QWSdk) {
         year: String,
         basin: QWSdk.BasinType = QWSdk.BasinType.NP
     ): Result<StormList> = apiCatching {
-        check(qwSdk.apiPlan.isFree()) {
-            "Invalid permission: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
-        check(basin == QWSdk.BasinType.NP) {
-            "Current not support this area: ${basin.name.lowercase()}!"
-        }
+        check(qwSdk.apiPlan.isStandard()) { "无效权限，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
+        check(basin == QWSdk.BasinType.NP) { "台风列表目前不支持此区域: ${basin.name.lowercase()}!" }
         val currentYear = Year.now().toString().toInt()
         val lastYear = currentYear - 1
-        check(year == currentYear.toString() || year == lastYear.toString()) {
-            "You can't list the year before last year and future storms!"
-        }
+        check(year == currentYear.toString() || year == lastYear.toString()) { "台风列表目前不支持该年份：$year" }
         qwSdk.client.get("tropical/storm-list") {
             url {
                 parameter("basin", basin)

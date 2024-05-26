@@ -46,9 +46,7 @@ class Ocean internal constructor(private val qwSdk: QWSdk) {
         location: LocationID,
         date: String
     ): Result<Tide> = apiCatching {
-        check(qwSdk.apiPlan.isFree()) {
-            "Invalid permission: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(qwSdk.apiPlan.isStandard()) { "无效权限，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         DateUtil(date).verifyYMD()
         qwSdk.client.get("ocean/tide") {
             url {
@@ -74,9 +72,7 @@ class Ocean internal constructor(private val qwSdk: QWSdk) {
         location: LocationID,
         date: String
     ): Result<Currents> = apiCatching {
-        check(qwSdk.apiPlan.isFree()) {
-            "Invalid permission: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(qwSdk.apiPlan.isStandard()) { "无效权限，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         DateUtil(date).verifyYMD()
         qwSdk.client.get("ocean/currents") {
             url {

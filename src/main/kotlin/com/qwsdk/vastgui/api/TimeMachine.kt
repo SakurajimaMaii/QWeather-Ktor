@@ -51,9 +51,7 @@ class TimeMachine internal constructor(private val qwSdk: QWSdk) {
         unit: QWSdk.Units = QWSdk.Units.M,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<HistoricalWeather> = apiCatching {
-        check(qwSdk.apiPlan.isFree()) {
-            "Invalid permission: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(qwSdk.apiPlan.isStandard()) { "无效权限，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         DateUtil(date).verifyYMD()
         qwSdk.client.get("historical/weather") {
             url {
@@ -85,9 +83,7 @@ class TimeMachine internal constructor(private val qwSdk: QWSdk) {
         unit: QWSdk.Units = QWSdk.Units.M,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<HistoricalAir> = apiCatching {
-        check(qwSdk.apiPlan.isFree()) {
-            "Invalid permission: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(qwSdk.apiPlan.isStandard()) { "无效权限，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         DateUtil(date).verifyYMD()
         qwSdk.client.get("historical/air") {
             url {

@@ -47,12 +47,8 @@ class SolarRadiation internal constructor(private val qwSdk: QWSdk) {
         hour: Hour = Hour.Hour24,
         location: Coordinate
     ): Result<SolarRadiation> = runCatching {
-        check(qwSdk.apiPlan.isFree()) {
-            "Invalid permission: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
-        check(hour is Hour.Hour24 || hour is Hour.Hour72) {
-            "Invalid range: only support Hour24 or Hour72."
-        }
+        check(qwSdk.apiPlan.isStandard()) { "无效权限，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
+        check(hour is Hour.Hour24 || hour is Hour.Hour72) { "无效时间范围：仅支持 Hour24 或 Hour72。" }
         qwSdk.client.get("solar-radiation/${hour.range}") {
             parameter("location", location.location)
         }.body()

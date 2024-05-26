@@ -52,9 +52,7 @@ class Weather internal constructor(private val qwSdk: QWSdk) {
         unit: QWSdk.Units = QWSdk.Units.M,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<WeatherNow> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
         qwSdk.client.get("weather/now") {
             url {
                 parameter("location", location.location)
@@ -84,12 +82,10 @@ class Weather internal constructor(private val qwSdk: QWSdk) {
         unit: QWSdk.Units = QWSdk.Units.M,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<WeatherDaily> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
-        check(!(qwSdk.apiPlan.isFree() && arrayOf(Day.Day10, Day.Day15, Day.Day30).contains(days))) {
-            "Invalid day range: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
+        val standardRange = qwSdk.apiPlan.isStandard()
+        val freeRange = qwSdk.apiPlan.isFree() && (Day.Day3 == days || Day.Day7 == days)
+        check(standardRange || freeRange) { "无效的时间范围，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         qwSdk.client.get("weather/${days.range}") {
             parameter("location", location.location)
             parameter("lang", lang)
@@ -116,12 +112,10 @@ class Weather internal constructor(private val qwSdk: QWSdk) {
         unit: QWSdk.Units = QWSdk.Units.M,
         lang: QWSdk.Lang = QWSdk.Lang.ZH
     ): Result<WeatherHourly> = apiCatching {
-        check(location is LocationID || location is Coordinate) {
-            "Invalid type: only support Coordinate or LocationID."
-        }
-        check(!(qwSdk.apiPlan.isFree() && arrayOf(Hour.Hour72, Hour.Hour168).contains(hours))) {
-            "Invalid day range: please refer to https://dev.qweather.com/docs/finance/subscription/#comparison"
-        }
+        check(location is LocationID || location is Coordinate) { "无效类型，当前仅支持Coordinate或LocationID" }
+        val standardRange = qwSdk.apiPlan.isStandard()
+        val freeRange = qwSdk.apiPlan.isFree() && Hour.Hour24 == hours
+        check(standardRange || freeRange) { "无效的时间范围，请参考：https://dev.qweather.com/docs/finance/subscription/#comparison" }
         qwSdk.client.get("weather/${hours.range}") {
             url {
                 parameter("location", location.location)
