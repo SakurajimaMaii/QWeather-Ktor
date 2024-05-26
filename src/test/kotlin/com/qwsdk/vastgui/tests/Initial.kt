@@ -16,8 +16,26 @@
 
 package com.qwsdk.vastgui.tests
 
+import com.log.vastgui.core.base.Logger
+import com.log.vastgui.core.getLogFactory
+import com.log.vastgui.core.plugin.LogPrinter
+import com.log.vastgui.core.plugin.LogSwitch
+import com.log.vastgui.desktop.desktop
 import com.qwsdk.vastgui.QWSdk
 import com.qwsdk.vastgui.QWSdk.Plan
 
-val qw = QWSdk
-    .getInstance(QWSdk.Configuration(Plan.Standard, "530e4e6c66ec464385f5a794b44cf89a"))
+val mLogger = getLogFactory {
+    install(LogSwitch) {
+        open = true
+    }
+    install(LogPrinter) {
+        logger = Logger.desktop()
+    }
+}.getLog(QWSdk::class.java)
+
+// 新增日志打印
+val configuration = QWSdk.Configuration(Plan.Standard, System.getenv("WebKey")) {
+    mLogger.d(it)
+}
+
+val qw = QWSdk.getInstance(configuration)

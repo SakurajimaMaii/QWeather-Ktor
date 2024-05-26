@@ -28,7 +28,7 @@ class TestTimeMachine {
 
     @Test
     fun weatherHistoricalTest() = runTest {
-        qw.timeMachine().weatherHistory(LocationID(locationID), "20240110").onSuccess {
+        qw.timeMachine().weatherHistory(LocationID(locationID), "20240525").onSuccess {
             it.weatherHourly.forEach { weatherHourly ->
                 println(weatherHourly)
             }
@@ -40,7 +40,7 @@ class TestTimeMachine {
 
     @Test
     fun airHistoricalTest() = runTest {
-        qw.timeMachine().airHistory(LocationID(locationID), "20240110").onSuccess {
+        qw.timeMachine().airHistory(LocationID(locationID), "20240525").onSuccess {
             it.airHourly.forEach { airHourly ->
                 println(airHourly)
             }
